@@ -18,7 +18,8 @@ Usage Example:
 ===============================================================================
 */
 
-CREATE OR ALTER PROCEDURE silver.load_silver AS
+
+CREATE OR ALTER PROCEDURE Silver.load_silver AS
 BEGIN
   
     BEGIN TRY
@@ -67,9 +68,7 @@ BEGIN
 			WHERE cst_id IS NOT NULL
 		) t
 		WHERE flag_last = 1;
-	
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
+
 
 		PRINT '>> Truncating Table: silver.crm_prd_info';
 		TRUNCATE TABLE silver.crm_prd_info;
@@ -103,9 +102,6 @@ BEGIN
 				AS DATE
 			) AS prd_end_dt
 		FROM bronze.crm_prd_info;
-    
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
 
 		PRINT '>> Truncating Table: silver.crm_sales_details';
 		TRUNCATE TABLE silver.crm_sales_details;
@@ -149,9 +145,6 @@ BEGIN
 				ELSE sls_price  
 			END AS sls_price
 		FROM bronze.crm_sales_details;
-        
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
 
 		PRINT '>> Truncating Table: silver.erp_cust_az12';
 		TRUNCATE TABLE silver.erp_cust_az12;
@@ -177,9 +170,6 @@ BEGIN
 			END AS gen
 		FROM bronze.erp_cust_az12;
 
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
-
 		PRINT '------------------------------------------------';
 		PRINT 'Loading ERP Tables';
 		PRINT '------------------------------------------------';
@@ -200,9 +190,6 @@ BEGIN
 				ELSE TRIM(cntry)
 			END AS cntry
 		FROM bronze.erp_loc_a101;
-
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
 		
 		PRINT '>> Truncating Table: silver.erp_px_cat_g1v2';
 		TRUNCATE TABLE silver.erp_px_cat_g1v2;
@@ -220,12 +207,9 @@ BEGIN
 			maintenance
 		FROM bronze.erp_px_cat_g1v2;
 	
-		PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-        PRINT '>> -------------';
 
 		PRINT '=========================================='
 		PRINT 'Loading Silver Layer is Completed';
-        PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
 		PRINT '=========================================='
 		
 	END TRY
